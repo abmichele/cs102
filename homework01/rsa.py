@@ -66,7 +66,7 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     d.reverse()
     a, b, m = 0, 1, len(d)
     for i in range(1, m):
-        c, a = a, b, c - b * d[i]
+        c, a = a, b
         b = c - b * d[i]
     return b % s
 
