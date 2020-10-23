@@ -17,7 +17,7 @@ def is_prime(n: int) -> bool:
     if n == 1:
         answer = False
     else:
-        for m in range (2,n):
+        for m in range(2, n):
             if n % m != 0:
                 m += 1
                 continue
@@ -40,7 +40,7 @@ def gcd(a: int, b: int) -> int:
     elif a == 0 or b == 0:
         return a + b
     else:
-        for m in range (1, a):
+        for m in range(1, a):
             if a % m == 0 and b % m == 0:
                 i = m
                 m += 1
@@ -66,8 +66,9 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     d.reverse()
     a, b, m = 0, 1, len(d)
     for i in range(1, m):
-        c, a, b = a, b, c - b * d[i]
-    return (b % s)
+        c, a = a, b, c - b * d[i]
+        b = c - b * d[i]
+    return b % s
 
 
 

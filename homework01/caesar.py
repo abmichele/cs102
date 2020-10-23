@@ -16,16 +16,12 @@ def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
     """
     ciphertext, plaintext = "", list(plaintext)  
     for var in plaintext:
-        if ord('A') <= ord(var) <= ord('Z') and ord('A') <= ord(var) + shift <= ord('Z'):
+        if ord('A') <= ord(var) <= ord('Z') and ord('A') <= ord(var) + shift <= ord('Z') or ord('a') <= ord(var) <= ord('z') and ord('a') <= ord(var) + shift <= ord('z'):
             newletter = chr(ord(var) + shift)
         elif ord(var) < ord('A') or ord('a') > ord(var) > ord('Z') or ord(var) > ord('z'):
             newletter = var
-        elif ord('A') <= ord(var) <= ord('Z') and ord(var) + shift > ord('Z'):
+        elif ord('a') <= ord(var) <= ord('z') and ord(var) + shift > ord('z') or ord('A') <= ord(var) <= ord('Z') and ord(var) + shift > ord('Z'):
             newletter = chr(ord(var) + shift - 26)
-        elif ord('a') <= ord(var) <= ord('z') and ord(var) + shift > ord('z') or ord('A') <= ord(var) <= ord('Z') and ord('a') > ord(var) + shift > ord('Z'):
-            newletter = chr(ord(var) + shift - 26)
-        elif ord('a') <= ord(var) <= ord('z') and ord('a') <= ord(var) + shift <= ord('z'):
-                newletter = chr(ord(var) + shift)
         ciphertext += newletter
     return ciphertext
 
@@ -44,15 +40,11 @@ def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
     """
     plaintext, ciphertext = "", list(ciphertext)
     for var in ciphertext:
-        if ord('Z') >= ord(var)-shift >= ord('A') and ord('A') <= ord(var) <= ord('Z'):
+        if ord('Z') >= ord(var)-shift >= ord('A') and ord('A') <= ord(var) <= ord('Z') or ord('z') >= ord(var) >= ord('a') and ord('z') >= ord(var) - shift >= ord('a'):
             newletter = chr(ord(var) - shift)
         elif ord(var) < ord('A') or ord('a') > ord(var) > ord('Z') or ord(var) > ord('z'):
             newletter = var
-        elif ord(var) - shift < ord('A') and ord('A') <= ord(var) <= ord('Z'):
-            newletter = chr(ord(var) - shift + 26)
-        elif ord('z') >= ord(var) >= ord('a') and ord('z') >= ord(var) - shift >= ord('a'):
-            newletter = chr(ord(var) - shift)
-        elif ord('z') >= ord(var) >= ord('a') and ord(var) - shift < ord('a'):
+        elif ord(var) - shift < ord('A') and ord('A') <= ord(var) <= ord('Z') or ord('z') >= ord(var) >= ord('a') and ord(var) - shift < ord('a'):
             newletter = chr(ord(var) - shift + 26)
         plaintext += newletter
     return plaintext
