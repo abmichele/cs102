@@ -20,7 +20,7 @@ class VigenereTestCase(unittest.TestCase):
             ):
                 self.assertEqual(chiphertext, vigenere.encrypt_vigenere(plaintext, keyword))
 
-    def test_decrypt(self):
+    def test_decrypt(self):  
         cases = [
             ("PYTHON", "A", "PYTHON"),
             ("python", "a", "python"),
