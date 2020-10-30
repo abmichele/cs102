@@ -35,7 +35,7 @@ def group(values: List[str], n: int) -> List[List[str]]:
     i = 0
     while i < len(values):
         sheet = values[i:i+n]
-        groupedlist.append(sheet)
+        groupedlist.append(values[i:i+n])
         i += n 
     return groupedlist
 
@@ -63,11 +63,8 @@ def get_col(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     >>> get_col([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']], (0, 2))
     ['3', '6', '9']
     """
-    m = []
     _, n = pos
-    for i in grid:
-        m.append(i[n])
-    return m
+    return [i[n] for i in grid]
 
 
 
@@ -82,13 +79,7 @@ def get_block(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     >>> get_block(grid, (8, 8))
     ['2', '8', '.', '.', '.', '5', '.', '7', '9']
     """
-    row = pos[0] // 3 * 3
-    column = pos[1] // 3 * 3
-    block = []
-    for i in range(3):
-        for j in range(3):
-            block.append(grid[row + i][column + j])
-    return block
+    return [grid[pos[0] // 3 * 3 + i][pos[1] // 3 * 3 + j] for i in range(3) for j in range(3)]
 
 
 
@@ -108,6 +99,7 @@ def find_empty_positions(grid: List[List[str]]) -> Optional[Tuple[int, int]]:
             col = i.index(m)
             if m == '.':
                 return lin, col
+     
 
 
 def find_possible_values(grid: List[List[str]], pos: Tuple[int, int]) -> Set[str]:
@@ -121,11 +113,7 @@ def find_possible_values(grid: List[List[str]], pos: Tuple[int, int]) -> Set[str
     >>> values == {'2', '5', '9'}
     True
     """
-    values = set('123456789')
-    values -= set(get_block(grid, pos))
-    values -= set(get_row(grid, pos))
-    values -= set(get_col(grid, pos))
-    return values
+    return set('123456789') - set(get_block(grid, pos)) - set(get_row(grid, pos)) - set(get_col(grid, pos))
 
 
 
@@ -144,7 +132,7 @@ def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
     """
     
     pos = find_empty_positions(grid)
-    if pos == None:
+    if not pos:
         return grid
     m, n = pos
     for i in find_possible_values(grid, pos):
@@ -154,6 +142,10 @@ def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
             return solution
         else:
             grid[m][n] = '.'
+    
+    return None
+    
+
    
              
    
