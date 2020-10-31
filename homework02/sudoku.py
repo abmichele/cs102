@@ -188,16 +188,14 @@ def generate_sudoku(N: int) -> Optional[List[List[str]]]:
     >>> check_solution(solution)
     True
     """
-    grid = solve([[(".")]*9 for i in range(9)])
+    grid = solve([[(".")] * 9 for i in range(9)])
     while N < 81:
         row = random.randint(0, 8)
         col = random.randint(0, 8)
-        if grid[row][col] != ".":
-            grid[row][col] = "."
+        if grid[row][col] != ".":  # type: ignore
+            grid[row][col] = "."  # type: ignore
             N += 1
     return grid
-    
-
 
 
 if __name__ == "__main__":
