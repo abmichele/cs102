@@ -16,8 +16,7 @@ def display(grid: List[List[str]]) -> None:
     for row in range(9):
         print(
             "".join(
-                grid[row][col].center(width) + ("|" if str(col) in "25" else "")
-                for col in range(9)
+                grid[row][col].center(width) + ("|" if str(col) in "25" else "") for col in range(9)
             )
         )
         if str(row) in "25":
@@ -78,11 +77,7 @@ def get_block(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     >>> get_block(grid, (8, 8))
     ['2', '8', '.', '.', '.', '5', '.', '7', '9']
     """
-    return [
-        grid[pos[0] // 3 * 3 + i][pos[1] // 3 * 3 + j]
-        for i in range(3)
-        for j in range(3)
-    ]
+    return [grid[pos[0] // 3 * 3 + i][pos[1] // 3 * 3 + j] for i in range(3) for j in range(3)]
 
 
 def find_empty_positions(grid: List[List[str]]) -> Optional[Tuple[int, int]]:
@@ -168,7 +163,6 @@ def check_solution(solution: List[List[str]]) -> bool:
             block = set(get_block(solution, (row, col)))
             if block != m:
                 return False
-
     return True
 
 
@@ -194,10 +188,7 @@ def generate_sudoku(N: int) -> Optional[List[List[str]]]:
     >>> check_solution(solution)
     True
     """
-    base = []
-    base += [(".") for i in range(81)]
-    grid = group(base, 9)
-    grid = solve(grid)
+    grid = solve([[(".")]*9 for i in range(9)])
     while N < 81:
         row = random.randint(0, 8)
         col = random.randint(0, 8)
@@ -205,6 +196,8 @@ def generate_sudoku(N: int) -> Optional[List[List[str]]]:
             grid[row][col] = "."
             N += 1
     return grid
+    
+
 
 
 if __name__ == "__main__":
