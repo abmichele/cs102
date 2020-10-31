@@ -32,11 +32,7 @@ def group(values: List[str], n: int) -> List[List[str]]:
     """
     groupedlist = []
     values = list(values)
-    i = 0
-    while i < len(values):
-        sheet = values[i:i+n]
-        groupedlist.append(values[i:i+n])
-        i += n 
+    groupedlist += [values[i:i+n] for i in range(0, len(values), n)]
     return groupedlist
 
 
@@ -194,10 +190,7 @@ def generate_sudoku(N: int) -> List[List[str]]:
     True
     """
     base = []
-    i = 0
-    while i < 81:
-        base.append('.')
-        i += 1
+    base += [('.') for i in range(81)]
     grid = group(base, 9)
     grid = solve(grid)
     while N < 81:
