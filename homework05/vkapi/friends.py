@@ -75,7 +75,7 @@ def get_mutual(
     :param progress: Callback для отображения прогресса.
     """
     if target_uid:
-        result = session.get(
+        res = session.get(
             "friends.getMutual",
             params={
                 "source_uid": source_uid,
@@ -87,8 +87,8 @@ def get_mutual(
                 "v": config.VK_CONFIG["version"],
             },
         ).json()["response"]
-    else:
-        result: tp.List[MutualFriends] = []
+        return res
+    result: tp.List[MutualFriends] = []
     ran = range(0, len(target_uids), 100)  # type: ignore
     if progress is not None:
         ran = progress(ran)
@@ -99,10 +99,8 @@ def get_mutual(
             params={
                 "source_uid": source_uid,
                 "target_uids": ",".join(
-                    [
-                        str(element) for element in target_uids[shift : shift + 100]
-                    ]  #  type: ignore
-                ),
+                    [str(element) for element in target_uids[shift : shift + 100]]  # type: ignore
+                ),  # type: ignore
                 "order": order,
                 "count": count,
                 "offset": offset + shift,
