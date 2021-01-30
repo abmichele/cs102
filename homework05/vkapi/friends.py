@@ -100,8 +100,8 @@ def get_mutual(
                 "source_uid": source_uid,
                 "target_uids": ",".join(
                     [
-+                        str(element) for element in target_uids[shift : shift + 100]
-+                    ]  #  type: ignore
+                         str(element) for element in target_uids[shift : shift + 100]
+                     ]  #  type: ignore
                 ),
                 "order": order,
                 "count": count,
