@@ -9,7 +9,6 @@ from vkapi.exceptions import APIError
 QueryParams = tp.Optional[tp.Dict[str, tp.Union[str, int]]]
 
 
-
 @dataclasses.dataclass(frozen=True)
 class FriendsResponse:
     count: int
@@ -17,7 +16,10 @@ class FriendsResponse:
 
 
 def get_friends(
-    user_id: int, count: int = 5000, offset: int = 0, fields: tp.Optional[tp.List[str]] = None
+    user_id: int,
+    count: int = 5000,
+    offset: int = 0,
+    fields: tp.Optional[tp.List[str]] = None,
 ) -> FriendsResponse:
     """
     Получить список идентификаторов друзей пользователя или расширенную информацию
@@ -35,20 +37,22 @@ def get_friends(
 
     query_params = {
         "user_id": user_id,
-            "count": count,
-            "offset": offset,
-            "fields": fields,
-            "access_token": config.VK_CONFIG["access_token"],
-            "v": config.VK_CONFIG["version"],
+        "count": count,
+        "offset": offset,
+        "fields": fields,
+        "access_token": config.VK_CONFIG["access_token"],
+        "v": config.VK_CONFIG["version"],
     }
 
-    response = session.get("friends.get", query_params).json()['response']
+    response = session.get("friends.get", query_params).json()["response"]
     return FriendsResponse(count=response["count"], items=response["items"])
+
 
 class MutualFriends(tp.TypedDict):
     id: int
     common_friends: tp.List[int]
     common_count: int
+
 
 def get_mutual(
     source_uid: tp.Optional[int] = None,

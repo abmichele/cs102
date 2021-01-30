@@ -1,4 +1,3 @@
-  
 import typing as tp
 
 import requests
@@ -26,9 +25,9 @@ class Session(requests.Session):
     ) -> None:
         super().__init__()
         self.retries = Retry(
-            total = max_retries,
-            backoff_factor = backoff_factor,
-            status_forcelist = [500],
+            total=max_retries,
+            backoff_factor=backoff_factor,
+            status_forcelist=[500],
         )
         self.mount(
             base_url,

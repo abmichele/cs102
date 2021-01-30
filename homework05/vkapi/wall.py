@@ -1,4 +1,3 @@
-  
 import textwrap
 import time
 import typing as tp
@@ -9,6 +8,7 @@ from pandas import json_normalize
 from requests.api import post
 from vkapi import config, session
 from vkapi.exceptions import APIError
+
 
 def get_posts_2500(
     owner_id: str = "",
@@ -142,13 +142,13 @@ def get_wall_execute(
     for _ in window:
         try:
             posts2500 = get_posts_2500(
-                owner_id = owner_id,
-                domain = domain,
-                offset = offset + len(posts),
-                max_count = num_records,
-                filter = filter,
-                extended = extended,
-                fields = fields,
+                owner_id=owner_id,
+                domain=domain,
+                offset=offset + len(posts),
+                max_count=num_records,
+                filter=filter,
+                extended=extended,
+                fields=fields,
             )
             posts.update(posts2500)
             if not (max_count - len(posts)) > num_records:
