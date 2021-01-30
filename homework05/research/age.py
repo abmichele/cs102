@@ -19,7 +19,7 @@ def age_predict(user_id: int) -> tp.Optional[float]:
     friends = get_friends(user_id, fields=["bdate"])
     for friend in friends.items:
         try:
-            birth_date = dt.datetime.strptime(friend["bdate"], "%d.%m.%Y")
+            birth_date = dt.datetime.strptime(friend["bdate"], "%d.%m.%Y") # type: ignore
             age = relativedelta(dt.datetime.now(), birth_date).years
             ages.append(age)
         except (ValueError, KeyError):

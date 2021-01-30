@@ -87,8 +87,8 @@ def get_mutual(
                 "v": config.VK_CONFIG["version"],
             },
         ).json()["response"]
-
-    result: tp.List[MutualFriends] = []
+    else:
+        result: tp.List[MutualFriends] = []
     ran = range(0, len(target_uids), 100)  # type: ignore
     if progress is not None:
         ran = progress(ran)
