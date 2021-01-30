@@ -15,8 +15,8 @@ def hash_object(data: bytes, fmt: str, write: bool = False) -> str:
     sha = hashlib.sha1(fmt_data).hexdigest()
     if write:
         gitdir = repo_find()
-        (gitdir / "objects" / sha1[:2]).mkdir(exist_ok=True)
-        with (gitdir / "objects" / sha1[:2] / sha1[2:]).open("wb") as f:
+        (gitdir / "objects" / sha[:2]).mkdir(exist_ok=True)
+        with (gitdir / "objects" / sha[:2] / sha[2:]).open("wb") as f:
             f.write(zlib.compress(fmt_data))
     return sha
 
@@ -55,7 +55,6 @@ def read_tree(data: bytes) -> tp.List[tp.Tuple[int, str, str]]:
     return tree
 
 
-
 def cat_file(obj_name: str, pretty: bool = True) -> None:
     fmt, data = read_object(obj_name, repo_find())
     if fmt in ["blob", "commit"]:
@@ -67,6 +66,7 @@ def cat_file(obj_name: str, pretty: bool = True) -> None:
                 "tree" if index[0] == 40000 else "blob",
                 index[1] + "\t" + index[2],
             )
+
 
 def find_tree_files(tree_sha: str, gitdir: pathlib.Path) -> tp.List[tp.Tuple[str, str]]:
     pass

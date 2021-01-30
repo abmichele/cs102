@@ -49,6 +49,7 @@ class GitIndexEntry(tp.NamedTuple):
         res = GitIndexEntry(*data_list)
         return res
 
+
 def read_index(gitdir: pathlib.Path) -> tp.List[GitIndexEntry]:
     if not (gitdir / "index").exists():
         return []
@@ -56,7 +57,7 @@ def read_index(gitdir: pathlib.Path) -> tp.List[GitIndexEntry]:
         data = f.read()
     last_pos = 12
     result = []
-    for i in range(struct.unpack("!I", data[8:12])[0]):
+    for _ in range(struct.unpack("!I", data[8:12])[0]):
         new_last_pos = data.index(b"\00", last_pos + 62)
         while data[new_last_pos] != 0 or (new_last_pos - 11) % 8 != 0:
             new_last_pos += 1
@@ -83,7 +84,10 @@ def ls_files(gitdir: pathlib.Path, details: bool = False) -> None:
         for entry in entries:
             print(entry.name)
 
-def update_index(gitdir: pathlib.Path, paths: tp.List[pathlib.Path], write: bool = True) -> None:
+
+def update_index(
+    gitdir: pathlib.Path, paths: tp.List[pathlib.Path], write: bool = True
+) -> None:
     entries = read_index(gitdir)
     for path in paths:
         with path.open("rb") as f:

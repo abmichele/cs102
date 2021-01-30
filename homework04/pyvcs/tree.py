@@ -9,7 +9,9 @@ from pyvcs.objects import hash_object
 from pyvcs.refs import get_ref, is_detached, resolve_head, update_ref
 
 
-def write_tree(gitdir: pathlib.Path, index: tp.List[GitIndexEntry], dirname: str = "") -> str:
+def write_tree(
+    gitdir: pathlib.Path, index: tp.List[GitIndexEntry], dirname: str = ""
+) -> str:
     tree_content: tp.List[tp.Tuple[int, pathlib.Path, bytes]] = []
     subtrees: tp.Dict[str, tp.List[GitIndexEntry]] = dict()
     files = [str(x) for x in (gitdir.parent / dirname).glob("*")]
@@ -22,7 +24,6 @@ def write_tree(gitdir: pathlib.Path, index: tp.List[GitIndexEntry], dirname: str
                 subtrees[dname] = []
             subtrees[dname].append(entry)
     for name in subtrees:
-        stat = (gitdir.parent / dirname / name).stat()
         tree_content.append(
             (
                 0o40000,
@@ -38,7 +39,8 @@ def write_tree(gitdir: pathlib.Path, index: tp.List[GitIndexEntry], dirname: str
         )
     tree_content.sort(key=lambda x: x[1])
     data = b"".join(
-        f"{elem[0]:o} {elem[1].name}".encode() + b"\00" + elem[2] for elem in tree_content
+        f"{elem[0]:o} {elem[1].name}".encode() + b"\00" + elem[2]
+        for elem in tree_content
     )
     return hash_object(data, "tree", write=True)
 
@@ -50,7 +52,11 @@ def commit_tree(
     parent: tp.Optional[str] = None,
     author: tp.Optional[str] = None,
 ) -> str:
-    if author is None and "GIT_AUTHOR_NAME" in os.environ and "GIT_AUTHOR_EMAIL" in os.environ:
+    if (
+        author is None
+        and "GIT_AUTHOR_NAME" in os.environ
+        and "GIT_AUTHOR_EMAIL" in os.environ
+    ):
         author = str(
             os.getenv("GIT_AUTHOR_NAME", None)  # type: ignore
             + " "
