@@ -4,7 +4,8 @@ import typing as tp
 
 import pygame
 from pygame.locals import *
-import copy
+from copy import deepcopy
+from itertools import product
 
 Cell = tp.Tuple[int, int]
 Cells = tp.List[int]
@@ -16,7 +17,7 @@ class GameOfLife:
         self,
         size: tp.Tuple[int, int],
         randomize: bool = True,
-        max_generations: tp.Optional[float] = float("inf"),
+        max_generations: float = float("inf"),
     ) -> None:
         # Размер клеточного поля
         self.rows, self.cols = size
@@ -44,11 +45,11 @@ class GameOfLife:
                 m = cell[0] + i
                 n = cell[1] + j
                 if 0 <= n < self.cols and 0 <= m < self.rows and (i, j) != (0, 0):
-                    neighbours.append(self.grid[m][n])
+                    neighbours.append(self.curr_generation[m][n])
         return neighbours
 
     def get_next_generation(self) -> Grid:
-        m = self.grid
+        m = deepcopy(self.curr_generation)
         for i in range(self.rows):
             for j in range(self.cols):
                 if sum(self.get_neighbours((i, j))) < 2 or sum(self.get_neighbours((i, j))) > 3:
@@ -61,9 +62,9 @@ class GameOfLife:
         """
         Выполнить один шаг игры.
         """
-        self.prev_generation = copy.deepcopy(self.curr_generation)
+        self.prev_generation = deepcopy(self.curr_generation)
         self.curr_generation = self.get_next_generation()
-        pass
+        self.generations += 1
 
     @property
     def is_max_generations_exceeded(self) -> bool:
@@ -86,16 +87,18 @@ class GameOfLife:
         """
         rows = 0
         grid = []
-        f = open(filename)
+        f = open(filename, "r")
         for line in f:
             row = [int(i) for i in line if i != "\n"]
             grid.append(row)
             rows += 1
         cols = len(row)
         start_from_file = GameOfLife((rows, cols), False)
-        start_from_file.prev_generation = GameOfLife.create_grid(start_from_file)
+        # start_from_file.prev_generation = GameOfLife.create_grid(start_from_file)
         start_from_file.curr_generation = grid
         f.close()
+
+        return start_from_file
 
     def save(self, filename: pathlib.Path) -> None:
         """
