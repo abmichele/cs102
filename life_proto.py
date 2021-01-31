@@ -1,6 +1,6 @@
 import random
 import typing as tp
-from copy import deepcopy
+
 import pygame
 
 Cell = tp.Tuple[int, int]
@@ -41,15 +41,14 @@ class GameOfLife:
         clock = pygame.time.Clock()
         pygame.display.set_caption("Game of Life")
         self.screen.fill(pygame.Color("white"))
-        self.grid = self.create_grid(True)
         running = True
         while running:
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+                if event.type == QUIT:
                     running = False
-            self.draw_grid()
             self.draw_lines()
-            self.grid = self.get_next_generation()
+            self.draw_grid()
+            self.get_next_generation()
             pygame.display.flip()
             clock.tick(self.speed)
         pygame.quit()
@@ -93,6 +92,7 @@ class GameOfLife:
                     pygame.draw.rect(
                         self.screen, pygame.Color("white"), (j, i, self.cell_size, self.cell_size)
                     )
+        pass
 
     def get_neighbours(self, cell: Cell) -> Cells:
         """
@@ -130,16 +130,11 @@ class GameOfLife:
         out : Grid
             Новое поколение клеток.
         """
-        m = deepcopy(self.grid)
-        for i in range(len(m)):
-            for j in range(len(m[i])):
+        m = self.grid
+        for i in range(self.cell_height):
+            for j in range(self.cell_width):
                 if sum(self.get_neighbours((i, j))) < 2 or sum(self.get_neighbours((i, j))) > 3:
                     m[i][j] = 0
                 elif sum(self.get_neighbours((i, j))) == 3:
                     m[i][j] = 1
         return m
-
-
-if __name__ == "__main__":
-    game = GameOfLife(320, 240, 20)
-    game.run()
