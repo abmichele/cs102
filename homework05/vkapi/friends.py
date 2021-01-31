@@ -36,7 +36,7 @@ def get_friends(
 
     response = session.get(
         "friends.get",
-        query_params={
+        params={
             "user_id": user_id,
             "count": count,
             "offset": offset,
