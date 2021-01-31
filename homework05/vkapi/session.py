@@ -1,4 +1,4 @@
-import typing as tp
+import typing as tp  # type: ignore
 import requests
 from requests.adapters import HTTPAdapter
 from requests.exceptions import RetryError
