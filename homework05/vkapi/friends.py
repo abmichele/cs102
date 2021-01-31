@@ -34,16 +34,17 @@ def get_friends(
     assert isinstance(user_id, int), "user_id must be positive integer"
     assert user_id > 0, "user_id must be positive integer"
 
-    query_params = {
-        "user_id": user_id,
-        "count": count,
-        "offset": offset,
-        "fields": fields,
-        "access_token": config.VK_CONFIG["access_token"],
-        "v": config.VK_CONFIG["version"],
-    }
-
-    response = session.get("friends.get", query_params).json()["response"]
+    response = session.get(
+        "friends.get",
+        query_params={
+            "user_id": user_id,
+            "count": count,
+            "offset": offset,
+            "fields": fields,
+            "access_token": config.VK_CONFIG["access_token"],
+            "v": config.VK_CONFIG["version"],
+        },
+    ).json()["response"]
     return FriendsResponse(count=response["count"], items=response["items"])
 
 
