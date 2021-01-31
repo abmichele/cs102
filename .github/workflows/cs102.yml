@@ -17,10 +17,13 @@ jobs:
         pip install black mypy pylint
     - name: Install specific dependencies
       run: |
-        pip install -r homework05/requirements.txt
+        if [ -f ${{ github.head_ref }}/requirements.txt ];
+        then
+          pip install -r ${{ github.head_ref }}/requirements.txt
+        fi
     - name: Run black
       run: |
-        black --check --diff --color --exclude "test*" ${{ github.head_ref }}
+        black -l 100 --check --diff --color --exclude "test*" ${{ github.head_ref }}
     - name: Run mypy
       run: |
         mypy --ignore-missing-imports ${{ github.head_ref }}
