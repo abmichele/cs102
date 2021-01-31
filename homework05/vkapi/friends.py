@@ -32,7 +32,6 @@ def get_friends(
     :return: Список идентификаторов друзей пользователя или список пользователей.
     """
     assert isinstance(user_id, int), "user_id must be positive integer"
-    assert isinstance(fields, str), "fields must be string"
     assert user_id > 0, "user_id must be positive integer"
 
     query_params = {
@@ -116,5 +115,6 @@ def get_mutual(
             )
             for data in response
         )
+        time.sleep(1 / 3 + 0.01)
 
     return result
