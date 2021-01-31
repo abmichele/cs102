@@ -33,3 +33,14 @@ class Console(UI):
                 self.life.step()
         finally:
             curses.endwin()
+
+
+def main():
+    game = GameOfLife(size=(32, 80))
+    app = Console(game)
+    app.run()
+
+
+if __name__ == "__main__":
+    main()
+
