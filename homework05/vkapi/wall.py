@@ -109,9 +109,23 @@ def get_wall_execute(
     :param fields: Список дополнительных полей для профилей и сообществ, которые необходимо вернуть.
     :param progress: Callback для отображения прогресса.
     """
+
+    code = f"""
+    return API.wall.get({{
+        "owner_id": "{owner_id}",
+        "domain": "{domain}",
+        "offset": {offset},
+        "count": "1",
+        "filter": "{filter}",
+        "extended": {extended},
+        "v": {config.VK_CONFIG["version"]}
+    }});
+    """
+
     response = session.post(
         url="execute",
         data={
+            "code": code,
             "access_token": config.VK_CONFIG["access_token"],
             "v": config.VK_CONFIG["version"],
         },
