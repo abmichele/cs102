@@ -60,6 +60,19 @@ class GUI(UI):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    (col, row) = pygame.mouse.get_pos()
+                    x = row // self.cell_size
+                    y = col // self.cell_size
+                    if self.life.curr_generation[x][y]:
+                        self.life.curr_generation[x][y] = 0
+                    else:
+                        self.life.curr_generation[x][y] = 1
+                    self.draw_grid()
+                    self.draw_lines()
+                    clock.tick(self.speed)
+                    pygame.display.flip()
+                    continue
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
                         if pause:
